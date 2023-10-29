@@ -13,6 +13,7 @@ Express is a minimal and flexible Node.js web application framework that provide
 Installation: Install the framework using the following command : npm install express
 
 ## Module used in backend
+
 1. Nodemon :-
 <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWSB0CxlDgiD3nh5mKIj25x53UOBSCCpN8r-e8Ays6&s" alt="Node.js" wigth=100px height=100px />
    The nodemon Module is a module that develop node.js based applications by automatically restarting the node application when file changes in the directory are detected.
@@ -24,7 +25,9 @@ Installation: Install the framework using the following command : npm install ex
    Dotenv is a zero-dependency module that loads environment variables from a .env file into process.env.
    Storing configuration in the environment separate from code is based on The Twelve-Factor App methodology.
    <br>
+   
 ### Library used in for backend
+
 1. bcryptjs :-
    It's a JavaScript library that provides bcrypt hashing functions for passwords. Bcrypt is a password-hashing function designed to be slow and computationally intensive
    to make it resistant to brute-force attacks. It incorporates a salt to protect against rainbow table attacks and is considered a secure way to store passwords
