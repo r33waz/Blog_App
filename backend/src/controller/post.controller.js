@@ -175,3 +175,30 @@ export const GetUserPosts = async (req, res) => {
     });
   }
 };
+
+//*API for the post search
+export const SearchPost = async (req, res) => {
+  try {
+    const query = req.params.key; 
+    const searchPost = await Post.find({
+      title: { $regex: query, $options: "i" },
+    });
+    if (!searchPost || searchPost.length === 0) {
+      return res.status(400).json({
+        status: false,
+        message: "No result found",
+      });
+    } else {
+      return res.status(200).json({
+        status: true,
+        data: searchPost,
+        message: "Search results",
+      });
+    }
+  } catch (error) {
+    return res.status(500).json({
+      status: false,
+      message: "Internal Server Error",
+    });
+  }
+};

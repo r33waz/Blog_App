@@ -1,10 +1,13 @@
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { toast } from "react-toastify";
+import { postData } from "../../service/axios.services";
 function Signup() {
   const [showpassword, setShowpassword] = useState(true);
+  const navigate = useNavigate()
   //*Using yup resolver and Schema validation
   const loginSchema = yup.object({
     firstname: yup.string().required("Please enter your firstname"),
@@ -13,6 +16,7 @@ function Signup() {
       .string()
       .required("Please enter your email")
       .matches(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/, "Invalid email type"),
+    phonenumber: yup.string().required("Please enter your phone mumber"),
     password: yup
       .string()
       .required("Please enter your password")
@@ -30,20 +34,27 @@ function Signup() {
       firstname: "",
       lastname: "",
       email: "",
+      phonenumber: "",
       password: "",
     },
     resolver: yupResolver(loginSchema),
   });
 
   //*Function to handelsubmit data
-  const Onsubmit = (data) => {
+  const Onsubmit = async (data) => {
     console.log(data);
+    const resp = await postData("/api/v1/signup", data);
+    if (resp.status) {
+      navigate("/blog/login");
+      toast.success(resp.message);
+    }
   };
+
   return (
     <>
       <div className="container mx-auto">
         <div className="flex items-center justify-center h-screen ">
-          <div className="flex flex-col gap-5 p-4 rounded bg-zinc-600 lg:w-1/4 md:w-1/2 sm:w-4/5 shadow-[3px_3px_4px_0px_#f7fafc]">
+          <div className="flex flex-col  p-4 rounded bg-zinc-600 lg:w-1/4 md:w-1/2 sm:w-4/5 shadow-[4px_4px_4px_0px_#f7fafc]">
             <div className="flex flex-col items-center justify-center">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -105,6 +116,21 @@ function Signup() {
                   {errors.email?.message}
                 </span>
               </div>
+
+              <div className="flex flex-col gap-2">
+                <label className=" text-black">Phone number</label>
+                <input
+                  type="text"
+                  className="h-12 pl-2 text-black bg-white border rounded outline-none"
+                  id="phonenumber"
+                  {...register("phonenumber", { required: true })}
+                  autoComplete="off"
+                />
+                <span className="text-xs font-light text-red-600">
+                  {errors.phonenumber?.message}
+                </span>
+              </div>
+
               <div className="flex flex-col gap-2  ">
                 <label className="text-black">Password</label>
                 <div className="relative">
@@ -162,7 +188,7 @@ function Signup() {
             <div className="flex justify-center">
               <p>Already have an account?</p>
               <Link
-                to="/login"
+                to="/blog/login"
                 className="font-semibold text-black active:text-white hover:text-orange-500"
               >
                 &nbsp;Loing your account

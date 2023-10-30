@@ -2,7 +2,7 @@ import Comment from "../model/comment";
 import Post from "../model/posts";
 
 //*API to create the comment
-export const CreateCOmment = async (req, res) => {
+export const CreateComment = async (req, res) => {
   try {
     const newComment = new Comment(req.body);
     const saveComment = await newComment.save();

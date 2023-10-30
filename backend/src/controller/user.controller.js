@@ -9,42 +9,43 @@ const saltRounds = 10;
 export const Signup = async (req, res) => {
   try {
     const { email, password, phoneNumber, firstname, lastname } = req.body;
-    console.log(phoneNumber);
     // Check if the email or phone number already exists
     const existingUserByEmail = await User.findOne({ email });
-    const existingUserByNumber = await User.findOne({ phoneNumber });
+    // const existingUserByNumber = await User.findOne({ phoneNumber });
     // validating if the user is already exist or not
     if (existingUserByEmail) {
       return res.status(400).json({
         status: false,
         message: "Email already exists",
       });
-    }
-    // validating if the user entered phone number is already in use or not
-    if (existingUserByNumber) {
-      return res.status(400).json({
-        status: false,
-        message: "Phone number already exists",
+      
+      // validating if the user entered phone number is already in use or not
+      // if (existingUserByNumber) {
+      //   return res.status(400).json({
+      //     status: false,
+      //     message: "Phone number already exists",
+      //   });
+      // }
+    } else {
+      // Hash the password and phone number
+      const hashPassword = await bycrypt.hash(password, saltRounds);
+      // Create a new user with hashed password and number
+      const newUser = new User({
+        firstname,
+        lastname,
+        email: email,
+        password: hashPassword,
+        phoneNumber: phoneNumber,
+      });
+      // Save the new user
+      await newUser.save();
+      // Sending user a response
+      return res.status(201).json({
+        status: true,
+        message: "Sign up successful",
       });
     }
-    // Hash the password and phone number
-    const hashPassword = await bycrypt.hash(password, saltRounds);
-    // Create a new user with hashed password and number
-    const newUser = new User({
-      firstname,
-      lastname,
-      email: email,
-      password: hashPassword,
-      phoneNumber: phoneNumber,
-    });
-    // Save the new user
-    await newUser.save();
-    // Sending user a response
-    return res.status(201).json({
-      status: true,
-      data: newUser,
-      message: "Sign up successful",
-    });
+   
   } catch (error) {
     console.error(error);
     return res.status(500).json({
@@ -87,9 +88,10 @@ export const Login = async (req, res) => {
       res.cookie("token", token, {
         path: "/",
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production", // Set to true if your app is served over HTTPS in production
-        sameSite: "None", // Set to "None" for cross-domain cookies over HTTPS
-        expires: new Date(Date.now() + 1000 * 86400), // 1 day expiry
+        maxAge: 36e5 * 7, // 7 days in milliseconds
+        sameSite: "none" || "lax",
+        secure: true, // This will only work on https connections
+        expiresIn: "1d",
       });
 
       // Sending user a response
@@ -127,10 +129,10 @@ export const Logout = (req, res) => {
   try {
     // Clear the token cookie by setting its value to null and setting an expired maxAge
     res.clearCookie("token", {
-      sameSite:"none",
+      sameSite: "none",
       path: "/",
       httpOnly: true,
-       // secure:true// Set the expiration date to a past date
+      // secure:true// Set the expiration date to a past date
     });
 
     return res.status(200).json({

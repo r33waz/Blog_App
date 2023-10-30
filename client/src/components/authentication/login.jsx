@@ -3,6 +3,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import useSWRMutation from "swr/mutation";
 function Login() {
   const [showpassword, setShowpassword] = useState(false);
   //*Using yup resolver and Schema validation
@@ -24,12 +25,15 @@ function Login() {
 
   //*Function to handelsubmit data
   const Onsubmit = (data) => {
-    console.log(data);
+    trigger({email:data.email,password:data.password});
   };
+
+
+  const {trigger} = useSWRMutation('')
   return (
     <div className="container mx-auto">
       <div className="flex items-center justify-center h-screen ">
-        <div className="flex flex-col gap-5 p-4 rounded bg-zinc-600 lg:w-1/4 md:w-1/2 sm:w-4/5">
+        <div className="flex flex-col gap-5 p-4 rounded bg-zinc-600 lg:w-1/4 md:w-1/2 sm:w-4/5 shadow-[4px_4px_4px_0px_#f7fafc]">
           <div className="flex flex-col items-center justify-center">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -119,7 +123,7 @@ function Login() {
           <div className="flex justify-center">
             <p>Donot have an account?</p>
             <Link
-              to="/signup"
+              to="/blog/signup"
               className="font-semibold text-black  hover:text-orange-500"
             >
               &nbsp;Create an account
