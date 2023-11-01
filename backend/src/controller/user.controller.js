@@ -18,7 +18,7 @@ export const Signup = async (req, res) => {
         status: false,
         message: "Email already exists",
       });
-      
+
       // validating if the user entered phone number is already in use or not
       // if (existingUserByNumber) {
       //   return res.status(400).json({
@@ -45,7 +45,6 @@ export const Signup = async (req, res) => {
         message: "Sign up successful",
       });
     }
-   
   } catch (error) {
     console.error(error);
     return res.status(500).json({
@@ -80,19 +79,26 @@ export const Login = async (req, res) => {
 
     if (user && correctPassword) {
       // Generating a JSON Web Token (JWT)
-      const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET_KEY, {
-        expiresIn: "1d",
-      });
+      // const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET_KEY, {
+      //   expiresIn: "1d",
+      // });
 
       // Setting a secure HTTPOnly cookie with the JWT
-      res.cookie("token", token, {
-        path: "/",
-        httpOnly: true,
-        maxAge: 36e5 * 7, // 7 days in milliseconds
-        sameSite: "none" || "lax",
-        secure: true, // This will only work on https connections
-        expiresIn: "1d",
-      });
+      // res.cookie("token", token, {
+      //   path: "/",
+      //   httpOnly: true,
+      //   maxAge: 36e5 * 7, // 7 days in milliseconds
+      //   sameSite: "none" || "lax",
+      //   secure: true, // This will only work on https connections
+      //   expiresIn: "1d",
+      // });
+
+      req.session.user = {
+        _id: user._id,
+        name: `${user.firstname} ${user.lastname}`,
+        email: user.email,
+        role: user.role,
+      };
 
       // Sending user a response
       return res.status(200).json({
@@ -125,19 +131,46 @@ export const Login = async (req, res) => {
 ////
 /////
 //* API for logout the user
+// export const Logout = (req, res) => {
+//   try {
+//     // Clear the token cookie by setting its value to null and setting an expired maxAge
+//     res.clearCookie("token", {
+//       sameSite: "none",
+//       path: "/",
+//       httpOnly: true,
+//       // secure:true// Set the expiration date to a past date
+//     });
+
+//     return res.status(200).json({
+//       status: true,
+//       message: "Logout Successful",
+//     });
+//   } catch (error) {
+//     console.error(error);
+//     return res.status(500).json({
+//       status: false,
+//       message: "Internal server error",
+//     });
+//   }
+// };
+
 export const Logout = (req, res) => {
   try {
-    // Clear the token cookie by setting its value to null and setting an expired maxAge
-    res.clearCookie("token", {
-      sameSite: "none",
-      path: "/",
-      httpOnly: true,
-      // secure:true// Set the expiration date to a past date
-    });
-
-    return res.status(200).json({
-      status: true,
-      message: "Logout Successful",
+    // Destroying the user's session
+    req.session.destroy((err) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).json({
+          status: false,
+          message: "Internal server error",
+        });
+      }
+      // Clearing the session cookie on the client-side
+      res.clearCookie("connect.sid");
+      return res.status(200).json({
+        status: true,
+        message: "Logout successful",
+      });
     });
   } catch (error) {
     console.error(error);

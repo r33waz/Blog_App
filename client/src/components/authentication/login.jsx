@@ -4,6 +4,7 @@ import * as yup from "yup";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import useSWRMutation from "swr/mutation";
+import { postData } from "../../service/axios.services";
 function Login() {
   const [showpassword, setShowpassword] = useState(false);
   //*Using yup resolver and Schema validation
@@ -24,12 +25,12 @@ function Login() {
   });
 
   //*Function to handelsubmit data
-  const Onsubmit = (data) => {
-    trigger({email:data.email,password:data.password});
+  const Onsubmit = async(data) => {
+    const resp = await postData('/api/v1/login', data)
+    console.log(resp)
   };
 
 
-  const {trigger} = useSWRMutation('')
   return (
     <div className="container mx-auto">
       <div className="flex items-center justify-center h-screen ">

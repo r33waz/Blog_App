@@ -1,27 +1,23 @@
-import Jwt from "jsonwebtoken";
-import User from "../model/user.model.js";
 
-export const authentication = async (req, res, next) => {
+export const authentication = (req, res, next) => {
   try {
-    const token = req.cookies.token;
-    console.log(token);
-    if (!token) {
+    const user = req.session.user;
+    console.log(user)
+    if (!user) {
       return res.status(401).json({
         status: false,
         message: "Access denied",
       });
     }
-    const verifyToken = Jwt.verify(token, process.env.JWT_SECRET_KEY);
-    const user = await User.findById(verifyToken._id);
-    if (!user) {
-      return res.status(400).json({
-        status: false,
-        message: "User not found",
-      });
-    }
     req.user = user;
     next();
-  } catch (error) {}
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      status: false,
+      message: "Internal server error",
+    });
+  }
 };
 
 export const authorization = (role) => {
@@ -29,7 +25,7 @@ export const authorization = (role) => {
     if (req.user.role !== role) {
       return res.status(400).json({
         status: false,
-        message: "Unathorized user",
+        message: "Unauthorized user",
       });
     } else {
       next();
