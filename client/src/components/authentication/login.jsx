@@ -1,10 +1,10 @@
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import useSWRMutation from "swr/mutation";
 import { postData } from "../../service/axios.services";
+import { toast } from "react-toastify";
 function Login() {
   const [showpassword, setShowpassword] = useState(false);
   //*Using yup resolver and Schema validation
@@ -12,6 +12,7 @@ function Login() {
     email: yup.string().required("Please enter your username"),
     password: yup.string().required("Please enter your password"),
   });
+  const navigate = useNavigate()
   const {
     register,
     handleSubmit,
@@ -28,6 +29,10 @@ function Login() {
   const Onsubmit = async(data) => {
     const resp = await postData('/api/v1/login', data)
     console.log(resp)
+    if(resp.status === true){
+      toast.success(resp.message)
+      navigate('/blog/home')
+    }
   };
 
 
