@@ -5,14 +5,17 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { postData } from "../../service/axios.services";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { login } from "./loginSlice";
 function Login() {
+  const dispatch = useDispatch();
   const [showpassword, setShowpassword] = useState(false);
   //*Using yup resolver and Schema validation
   const loginSchema = yup.object({
     email: yup.string().required("Please enter your username"),
     password: yup.string().required("Please enter your password"),
   });
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -26,15 +29,15 @@ function Login() {
   });
 
   //*Function to handelsubmit data
-  const Onsubmit = async(data) => {
-    const resp = await postData('/api/v1/login', data)
-    console.log(resp)
-    if(resp.status === true){
-      toast.success(resp.message)
-      navigate('/blog/home')
+  const Onsubmit = async (data) => {
+    const resp = await postData("/api/v1/login", data);
+
+    if (resp.status === true) {
+      dispatch(login(resp.data));
+      toast.success(resp.message);
+      navigate("/blog/home");
     }
   };
-
 
   return (
     <div className="container mx-auto">
@@ -61,7 +64,7 @@ function Login() {
             onSubmit={handleSubmit(Onsubmit)}
           >
             <div className="flex flex-col gap-2">
-              <label className=" text-black">Email</label>
+              <label className="text-black ">Email</label>
               <input
                 type="text"
                 className="h-12 pl-2 text-black bg-white border rounded outline-none"
@@ -75,10 +78,10 @@ function Login() {
               </span>
             </div>
             <div className="relative">
-              <label className=" text-black">Password</label>
+              <label className="text-black ">Password</label>
               <input
                 type={showpassword ? "text" : "password"}
-                className="h-12 w-full pl-2 text-black bg-white border rounded outline-none"
+                className="w-full h-12 pl-2 text-black bg-white border rounded outline-none"
                 id="password"
                 autoComplete="off"
                 {...register("password", { required: true })}
@@ -130,7 +133,7 @@ function Login() {
             <p>Donot have an account?</p>
             <Link
               to="/blog/signup"
-              className="font-semibold text-black  hover:text-orange-500"
+              className="font-semibold text-black hover:text-orange-500"
             >
               &nbsp;Create an account
             </Link>

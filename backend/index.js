@@ -18,7 +18,7 @@ app.use(
     cookie: {
       httpOnly: true,
       maxAge: 60 * 60 * 1000, // 1 hour in milliseconds
-      sameSite: "None",
+      sameSite: "Lax",
       secure: false
     },
   })
