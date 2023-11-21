@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { getData } from "../service/axios.services";
-import useSWR from 'swr'
+import useSWR from "swr";
 
- function HomePage() {
+function HomePage() {
   const [datas, setData] = useState();
   const fetcher = (url) => getData(url).then((res) => res);
-  const { data, error } = useSWR ("/api/v1/allpost", fetcher);
+  const { data, error } = useSWR("/api/v1/allpost", fetcher);
   console.log(datas);
   useEffect(() => {
     setData(data);
@@ -20,9 +20,7 @@ import useSWR from 'swr'
   }
   return (
     <>
-      <div className="container mx-auto mt-10 text-white">
-        sadsadsadsadsa
-      </div>
+      <div className="container mx-auto mt-10 text-white">sadsadsadsadsa</div>
     </>
   );
 }

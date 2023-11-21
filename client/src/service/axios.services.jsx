@@ -23,3 +23,15 @@ export const getData = async (url) => {
     throw error;
   }
 };
+
+export const deletData = async (url) => {
+  try {
+    const resp = await main_url.delete(url)
+    console.log(resp.data)
+    return resp.data
+  } catch (error) {
+    console.log(error);
+    toast.error(error.response.data.message);
+    throw error;
+  }
+}

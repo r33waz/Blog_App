@@ -8,6 +8,8 @@ import { store, persistor } from "../store/store";
 import NavBar from "./components/common/Navbar";
 import { PersistGate } from "redux-persist/integration/react";
 import { Provider } from "react-redux";
+import CreateBlog from "./pages/Blogs/create_blogs";
+import EiditBlog from "./pages/Blogs/eidit_blogs";
 function App() {
   return (
     <>
@@ -18,7 +20,10 @@ function App() {
             <Route index path="/" element={<BlogLanding/>} />
               <Route index path="/blog/home" element={<HomePage />} />
               <Route path="/blog/login" element={<Login />} />
-              <Route path="/blog/signup" element={<Signup />} />
+            <Route path="/blog/signup" element={<Signup />} />
+            {/* BLog */}
+            <Route path="/createblog" element={<CreateBlog />} />
+            <Route path="/eiditblog/:id" element={<EiditBlog/>} />
           </Routes>
         </PersistGate>
       </Provider>

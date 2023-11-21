@@ -1,5 +1,4 @@
-import Comment from "../model/comment";
-import Post from "../model/posts";
+import Comment from "../model/comment.js";
 
 //*API to create the comment
 export const CreateComment = async (req, res) => {

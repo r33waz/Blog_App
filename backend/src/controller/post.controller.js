@@ -1,10 +1,42 @@
+import cloudinary from "../config/cloudinary.config.js";
 import Post from "../model/posts.js";
+import fs from "fs";
 
 //*API to create a post
 export const CreatePost = async (req, res) => {
   try {
-    const newPost = new Post(req.body);
-    const savedPost = await newPost.save();
+    const { title, description, username, userid, categorys } = req.body;
+    let postPhoto;
+    if (
+      req.file.mimetype === "image/jpeg" ||
+      req.file.mimetype === "image/png" ||
+      req.file.mimetype === "image/jpg"
+    ) {
+      postPhoto = await cloudinary.v2.uploader.upload(req.file.path);
+    } else {
+      res.status(400).json({
+        success: false,
+        message: "Invalid image type",
+      });
+    }
+
+    console.log(postPhoto);
+
+    let newPost = {
+      title,
+      description,
+      photo: postPhoto.secure_url,
+      username,
+      userid,
+      categorys,
+    };
+
+    const savedPost = new Post(newPost);
+    await savedPost.save();
+
+    if (req.file) {
+      fs.unlinkSync(req.file.path);
+    }
     if (!savedPost) {
       return res.status(400).json({
         status: false,
@@ -14,17 +46,18 @@ export const CreatePost = async (req, res) => {
       return res.status(201).json({
         status: true,
         data: savedPost,
-        message: "Post created sucessfully",
+        message: "Post created successfully",
       });
     }
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res.status(500).json({
       status: false,
       message: "Internal server error",
     });
   }
 };
+
 //*API to get all posts
 export const Getallposts = async (req, res) => {
   try {
@@ -179,7 +212,7 @@ export const GetUserPosts = async (req, res) => {
 //*API for the post search
 export const SearchPost = async (req, res) => {
   try {
-    const query = req.params.key; 
+    const query = req.params.key;
     const searchPost = await Post.find({
       title: { $regex: query, $options: "i" },
     });

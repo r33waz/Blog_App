@@ -9,6 +9,7 @@ export const DBconnect = async () => {
       useUnifiedTopology: true,
     });
     console.log("Mongo Database is connected on", mongoose.connection.host);
+    console.log(process.cwd());
   } catch (error) {
     console.log("Mongo Database is facing", error);
   }
