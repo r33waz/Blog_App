@@ -5,7 +5,16 @@ import fs from "fs";
 //*API to create a post
 export const CreatePost = async (req, res) => {
   try {
+    console.log(req.body)
+    console.log(req.file)
+    if (!req.file) {
+      return res.status(400).json({
+        success: false,
+        message: "No file found",
+      });
+    }
     const { title, description, username, userid, categorys } = req.body;
+  
     let postPhoto;
     if (
       req.file.mimetype === "image/jpeg" ||

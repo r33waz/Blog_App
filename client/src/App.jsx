@@ -10,20 +10,26 @@ import { PersistGate } from "redux-persist/integration/react";
 import { Provider } from "react-redux";
 import CreateBlog from "./pages/Blogs/create_blogs";
 import EiditBlog from "./pages/Blogs/eidit_blogs";
+import MainProtectdRoute from "./pages/protecterdroute/mainprotectedroute";
+import Userlogout from "./pages/protecterdroute/userlogout";
 function App() {
   return (
     <>
       <Provider store={store}>
         <PersistGate persistor={persistor}>
-          <NavBar/>
+          <NavBar />
           <Routes>
-            <Route index path="/" element={<BlogLanding/>} />
+            <Route element={<MainProtectdRoute />}>
+              <Route index path="/" element={<BlogLanding />} />
               <Route index path="/blog/home" element={<HomePage />} />
+            </Route>
+            <Route element={<Userlogout />}>
               <Route path="/blog/login" element={<Login />} />
-            <Route path="/blog/signup" element={<Signup />} />
+              <Route path="/blog/signup" element={<Signup />} />
+            </Route>
             {/* BLog */}
-            <Route path="/createblog" element={<CreateBlog />} />
-            <Route path="/eiditblog/:id" element={<EiditBlog/>} />
+            <Route path="/blog/create" element={<CreateBlog />} />
+            <Route path="/eiditblog/:id" element={<EiditBlog />} />
           </Routes>
         </PersistGate>
       </Provider>

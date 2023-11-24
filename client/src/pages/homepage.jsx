@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { getData } from "../service/axios.services";
 import useSWR from "swr";
+import { CirclesWithBar } from "react-loader-spinner";
+import { Link } from "react-router-dom";
 
 function HomePage() {
   const [datas, setData] = useState();
@@ -9,6 +11,7 @@ function HomePage() {
   console.log(datas);
   useEffect(() => {
     setData(data);
+    document.title="Blog-Home"
   }, [data]);
 
   if (error) {
@@ -16,11 +19,36 @@ function HomePage() {
   }
 
   if (!datas) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <CirclesWithBar
+          height="100"
+          width="100"
+          color="white"
+          wrapperStyle={{}}
+          wrapperClass=""
+          visible={true}
+          outerCircleColor=""
+          innerCircleColor=""
+          barColor=""
+          ariaLabel="circles-with-bar-loading"
+        />
+      </div>
+    );
   }
   return (
     <>
-      <div className="container mx-auto mt-10 text-white">sadsadsadsadsa</div>
+      <div className="container mx-auto mt-10 text-white">
+        <div className="flex justify-end">
+          <Link
+            to="/blog/create"
+            className="w-32 p-1 font-serif text-sm font-thin text-center text-white bg-green-500 h-7 rounded-2xl"
+          >
+            Create Blog
+    
+          </Link>
+        </div>
+      </div>
     </>
   );
 }

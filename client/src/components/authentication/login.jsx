@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { postData } from "../../service/axios.services";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
@@ -39,6 +39,10 @@ function Login() {
     }
   };
 
+  useEffect(() => {
+    document.title="Blog-Login"
+  },[])
+  
   return (
     <div className="container mx-auto">
       <div className="flex items-center justify-center h-screen ">

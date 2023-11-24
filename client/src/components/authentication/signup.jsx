@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { postData } from "../../service/axios.services";
 function Signup() {
@@ -40,6 +40,10 @@ function Signup() {
     resolver: yupResolver(loginSchema),
   });
 
+  useEffect(() => {
+    document.title = "Blog-Signup";
+  },[]);
+
   //*Function to handelsubmit data
   const Onsubmit = async (data) => {
     console.log(data);
@@ -76,7 +80,7 @@ function Signup() {
               onSubmit={handleSubmit(Onsubmit)}
             >
               <div className="flex flex-col gap-2">
-                <label className=" text-black">First Name</label>
+                <label className="text-black ">First Name</label>
                 <input
                   type="text"
                   className="h-12 pl-2 text-black bg-white border rounded outline-none"
@@ -90,7 +94,7 @@ function Signup() {
                 </span>
               </div>
               <div className="flex flex-col gap-2">
-                <label className=" text-black">Last Name</label>
+                <label className="text-black ">Last Name</label>
                 <input
                   type="text"
                   className="h-12 pl-2 text-black bg-white border rounded outline-none"
@@ -104,7 +108,7 @@ function Signup() {
               </div>
 
               <div className="flex flex-col gap-2">
-                <label className=" text-black">Email</label>
+                <label className="text-black ">Email</label>
                 <input
                   type="text"
                   className="h-12 pl-2 text-black bg-white border rounded outline-none"
@@ -118,7 +122,7 @@ function Signup() {
               </div>
 
               <div className="flex flex-col gap-2">
-                <label className=" text-black">Phone number</label>
+                <label className="text-black ">Phone number</label>
                 <input
                   type="text"
                   className="h-12 pl-2 text-black bg-white border rounded outline-none"
@@ -131,12 +135,12 @@ function Signup() {
                 </span>
               </div>
 
-              <div className="flex flex-col gap-2  ">
+              <div className="flex flex-col gap-2 ">
                 <label className="text-black">Password</label>
                 <div className="relative">
                   <input
                     type={showpassword ? "password" : "text"}
-                    className="h-12 w-full pl-2 text-black bg-white border rounded outline-none"
+                    className="w-full h-12 pl-2 text-black bg-white border rounded outline-none"
                     id="password"
                     autoComplete="off"
                     {...register("password", { required: true })}

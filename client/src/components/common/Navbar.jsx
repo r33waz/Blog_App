@@ -8,8 +8,8 @@ import { logout } from "../authentication/loginSlice";
 import { useState } from "react";
 
 function NavBar() {
-  const name = useSelector((state) => state.user);
-  console.log(name)
+  const user = useSelector((state) => state.user);
+  console.log(user);
   const [isMobile, setMobile] = useState(false);
   const navbarToggle = () => {
     setMobile(!isMobile);
@@ -23,11 +23,11 @@ function NavBar() {
       navigate("/blog/login");
       toast.success(resp.message);
     }
-  }
+  };
 
-  const eiditblog = (id)=>{
-    navigate(`/editBlog/${id}`)
-  }
+  const eiditblog = (id) => {
+    navigate(`/editBlog/${id}`);
+  };
 
   return (
     <>
@@ -44,7 +44,7 @@ function NavBar() {
               <Link>About</Link>
               <Link>Contact</Link>
             </div>
-            {name.email ? (
+            {user.islogin ? (
               <div className="items-center hidden gap-2 md:flex ">
                 <DropdownMenu.Root>
                   <DropdownMenu.Trigger className="outline-none">
@@ -63,18 +63,19 @@ function NavBar() {
                         </svg>
                       </button>
                       <div className="flex flex-col ">
-                        <p>{name.name}</p>
-                        <small>{name.email}</small>
+                        <p>{user.name}</p>
+                        <small>{user.email}</small>
                       </div>
                     </div>
                   </DropdownMenu.Trigger>
                   <DropdownMenu.Content className="flex flex-col gap-2 bg-white shadow-[0px_0px_3px_1px_#f7fafc]  border-black border-2 text-black mr-5 w-40 duration-500 font-semibold p-2 rounded-md mt-2">
                     <DropdownMenu.Item className="flex gap-2 outline-none">
                       <button
-                        onClick={()=>{eiditblog(name.id)}}
-                        className="flex  text-center font-mono font-semibold text-black bg-white rounded-md text-sm"
+                        onClick={() => {
+                          eiditblog(user.id);
+                        }}
+                        className="flex font-mono text-sm font-semibold text-center text-black bg-white rounded-md"
                       >
-                        
                         Eidit Account
                       </button>
                     </DropdownMenu.Item>
@@ -82,7 +83,7 @@ function NavBar() {
                     <DropdownMenu.Item className="outline-none">
                       <button
                         onClick={Logout}
-                        className="flex items-center p-1 font-mono font-semibold text-base gap-2 text-black bg-white rounded-md"
+                        className="flex items-center gap-2 p-1 font-mono text-base font-semibold text-black bg-white rounded-md"
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"

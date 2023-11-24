@@ -104,6 +104,7 @@ export const Login = async (req, res) => {
       return res.status(200).json({
         status: true,
         data: {
+          islogin: true,
           _id: user._id,
           name: `${user.firstname} ${user.lastname}`,
           email: user.email,

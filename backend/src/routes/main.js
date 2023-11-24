@@ -7,6 +7,6 @@ const router = express.Router();
 
 router.use("/api/v1", userRoute);
 router.use("/api/v1", postRoute);
-router.use("/api/v1",commentRoute)
+router.use("/api/v1", commentRoute)
 
 export default router;
