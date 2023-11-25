@@ -8,7 +8,7 @@ const saltRounds = 10;
 
 export const Signup = async (req, res) => {
   try {
-    const { email, password, phoneNumber, firstname, lastname } = req.body;
+    const { email, password, phonenumber, firstname, lastname } = req.body;
     // Check if the email or phone number already exists
     const existingUserByEmail = await User.findOne({ email });
     // const existingUserByNumber = await User.findOne({ phoneNumber });
@@ -35,7 +35,7 @@ export const Signup = async (req, res) => {
         lastname,
         email: email,
         password: hashPassword,
-        phoneNumber: phoneNumber,
+        phonenumber: phonenumber,
       });
       // Save the new user
       await newUser.save();

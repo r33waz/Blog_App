@@ -113,7 +113,7 @@ function NavBar() {
                 </Link>
                 <Link
                   to="/blog/signup"
-                  className="p-1 text-lg font-semibold text-black bg-white rounded"
+                  className="p-1 text-lg font-semibold text-white bg-black rounded"
                 >
                   Signup
                 </Link>

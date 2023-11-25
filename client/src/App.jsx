@@ -12,6 +12,11 @@ import CreateBlog from "./pages/Blogs/create_blogs";
 import EiditBlog from "./pages/Blogs/eidit_blogs";
 import MainProtectdRoute from "./pages/protecterdroute/mainprotectedroute";
 import Userlogout from "./pages/protecterdroute/userlogout";
+import PostPage from "./pages/Blogs/postpage";
+import AdminPage from "./pages/Admin/adminpage";
+import Adminroute from "./pages/protecterdroute/adminroute";
+import Noroute from "./pages/protecterdroute/noroute";
+import UserEidit from "./pages/User/UserEidit";
 function App() {
   return (
     <>
@@ -22,6 +27,11 @@ function App() {
             <Route element={<MainProtectdRoute />}>
               <Route index path="/" element={<BlogLanding />} />
               <Route index path="/blog/home" element={<HomePage />} />
+              <Route path="/post/:id" element={<PostPage />} />
+              <Route element={<Adminroute />}>
+                <Route path="/blog/admin" element={<AdminPage />} />
+                <Route path="/eidit/user/:id" element={ <UserEidit/>}/>
+              </Route>
             </Route>
             <Route element={<Userlogout />}>
               <Route path="/blog/login" element={<Login />} />
@@ -30,6 +40,8 @@ function App() {
             {/* BLog */}
             <Route path="/blog/create" element={<CreateBlog />} />
             <Route path="/eiditblog/:id" element={<EiditBlog />} />
+            {/* No route page */}
+            <Route path="*" element={<Noroute />} />
           </Routes>
         </PersistGate>
       </Provider>

@@ -35,8 +35,8 @@ function CreateBlog() {
   const { trigger } = useSWRMutation("/api/v1/createpost", createpost);
   return (
     <div className="container mx-auto">
-      <div className="flex justify-center pt-8 items-center create_blog">
-        <h1 className="text-4xl font-serif underline flex items-center">
+      <div className="flex items-center justify-center pt-8 create_blog">
+        <h1 className="flex items-center font-serif text-4xl underline">
           Create Your Blog
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -52,15 +52,15 @@ function CreateBlog() {
         </h1>
       </div>
       <form onSubmit={handleSubmit(onsubmit)}>
-        <div className="flex text-black justify-center  items-center mt-8 p-8">
-          <div className="bg-white p-2 w-screen md:w-[50%] lg:w-[40%] flex flex-col gap-3">
+        <div className="flex items-center justify-center p-8 mt-8 text-black">
+          <div className="bg-white p-2 rounded w-screen md:w-[50%] lg:w-[35%] flex flex-col gap-3">
             <div className="flex flex-col gap-1">
-              <label className="text-lg font-serif ">Title</label>
+              <label className="font-serif text-lg ">Title</label>
               <input
                 id="title"
                 type="text"
                 placeholder="Title"
-                className="h-9 w-full pl-2 outline-none text-white rounded"
+                className="w-full pl-2 text-white rounded outline-none h-9"
                 {...register("title", { required: true })}
                 autoComplete="off"
                 autoFocus="on"
@@ -70,31 +70,29 @@ function CreateBlog() {
               </span>
             </div>
             <div className="flex flex-col gap-1">
-              <label className="text-lg font-serif ">Description</label>
+              <label className="font-serif text-lg ">Description</label>
               <textarea
                 id="description"
                 type="text"
                 placeholder="Description"
-                className="h-32 w-full pl-2 pt-1 outline-none text-white rounded"
+                className="w-full h-32 pt-1 pl-2 text-white rounded outline-none"
                 {...register("description", { required: true })}
                 autoComplete="off"
-                autoFocus="on"
               />
               <span className="text-xs font-semibold text-red-600">
                 {errors.description && <p>Description is required</p>}
               </span>
             </div>
             <div className="flex flex-col gap-1">
-              <label className="text-lg font-serif ">Upload Image</label>
+              <label className="font-serif text-lg ">Upload Image</label>
               <input
                 id="photo"
                 type="file"
                 placeholder="Upload Image"
-                className="h-10 w-full pl-2 pt-2 font-semibold outline-none  text-black border-2 border-black rounded"
+                className="w-full h-10 pt-2 pl-2 font-semibold text-black border-2 border-black rounded outline-none"
                 {...register("photo", { required: true })}
                 onChange={onChangePicture}
                 autoComplete="off"
-                autoFocus="on"
               />
               <span className="text-xs font-semibold text-red-600">
                 {errors.photo && <p>Image is required</p>}
@@ -105,22 +103,21 @@ function CreateBlog() {
                 <img
                   src={picture}
                   alt=""
-                  className="rounded  h-52 w-full border border-black"
+                  className="w-full border border-black rounded h-52"
                 />
               ) : (
                 ""
               )}
             </div>
             <div className="flex flex-col gap-1">
-              <label className="text-lg font-serif ">Category</label>
+              <label className="font-serif text-lg ">Category</label>
               <input
                 id="category"
                 type="text"
                 placeholder="Category"
-                className="h-10 w-full pl-2 pt- font-semibold outline-none  text-white rounded"
+                className="w-full h-10 pl-2 font-semibold text-white rounded outline-none pt-"
                 {...register("category", { required: true })}
                 autoComplete="off"
-                autoFocus="on"
               />
               <span className="text-xs font-semibold text-red-600">
                 {errors.category && <p>Category  is required</p>}
@@ -128,7 +125,7 @@ function CreateBlog() {
             </div>
             <button
               type="submit"
-              className="bg-black text-white h-10 rounded font-semibold"
+              className="h-10 font-semibold text-white bg-black rounded"
             >
               Submit
             </button>

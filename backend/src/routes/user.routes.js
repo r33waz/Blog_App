@@ -124,7 +124,7 @@ router.post("/logout", Logout);
  *         description: Unauthorized - Authentication failed
  */
 
-router.get("/getalluser", authentication, Getalluser);
+router.get("/getalluser", authentication,authorization("admin"), Getalluser);
 /**
  * @swagger
  * /api/v1/getalluser/{id}:

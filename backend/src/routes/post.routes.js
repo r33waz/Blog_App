@@ -6,7 +6,7 @@ import { upload } from '../middleware/multter.midddleware.js'
 
 const router = express.Router()
 router.post("/createpost", upload.single("photo"), CreatePost);
-router.get("/allpost",Getallposts)
+router.get("/allpost",authentication,Getallposts)
 router.get("/post/:id",PaticularPost)
 router.patch("/updatepost/:id",authentication,UpdatePost)
 router.delete("/deletepost/:id", DeletePost);
