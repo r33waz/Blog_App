@@ -106,7 +106,8 @@ export const Login = async (req, res) => {
         data: {
           islogin: true,
           _id: user._id,
-          name: `${user.firstname} ${user.lastname}`,
+          firstname: `${user.firstname}`,
+          lastname:`${user.lastname}`,
           email: user.email,
           role: user.role,
         },
@@ -219,24 +220,27 @@ export const GetUserById = async (req, res) => {
   const id = req.params.id;
   try {
     const partiCularUser = await User.findById({ _id: id });
-    if (partiCularUser) {
-      return res.status(200).json({
-        status: true,
-        data: {
-          _id: partiCularUser._id,
-          name: partiCularUser.firstname + "" + partiCularUser.lastname,
-          email: partiCularUser.email,
-          phoneNumber: partiCularUser.phoneNumber,
-          role: partiCularUser.role,
-        },
-        message: "User fetched successfully",
-      });
-    } else {
+    console.log(partiCularUser.password)
+    if (!partiCularUser) {
       return res.status(404).json({
         status: false,
         message: "No User Found with this ID",
       });
     }
+
+    return res.status(200).json({
+      status: true,
+      data: {
+        _id: partiCularUser._id,
+        firstname: partiCularUser.firstname,
+        lastname: partiCularUser.lastname,
+        email: partiCularUser.email,
+        phonenumber: partiCularUser.phonenumber,
+        // password: correctPassword, // Use the actual property name
+        role: partiCularUser.role,
+      },
+      message: "User fetched successfully",
+    });
   } catch (error) {
     console.error(error);
     return res.status(500).json({

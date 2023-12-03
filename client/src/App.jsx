@@ -28,9 +28,9 @@ function App() {
               <Route index path="/" element={<BlogLanding />} />
               <Route index path="/blog/home" element={<HomePage />} />
               <Route path="/post/:id" element={<PostPage />} />
+              <Route path="/eidit/user/:id" element={<UserEidit />} />
               <Route element={<Adminroute />}>
                 <Route path="/blog/admin" element={<AdminPage />} />
-                <Route path="/eidit/user/:id" element={ <UserEidit/>}/>
               </Route>
             </Route>
             <Route element={<Userlogout />}>

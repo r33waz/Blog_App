@@ -1,4 +1,4 @@
-import React, { useEffect, useState,Fragment } from "react";
+import React, { useEffect, useState, Fragment } from "react";
 import useSWR from "swr";
 import { deletData, getData } from "../../service/axios.services";
 import { Dialog, Transition } from "@headlessui/react";
@@ -7,40 +7,32 @@ import { useNavigate } from "react-router-dom";
 
 function UserTab() {
   const [datas, setDatas] = useState([]);
-  const navigate = useNavigate()
+  const [visible, setVisible] = useState(15);
+  const navigate = useNavigate();
   const fetcher = (url) => getData(url).then((res) => res.data);
   const { data, isLoading, error } = useSWR("/api/v1/getalluser", fetcher);
   console.log(data);
   useEffect(() => {
     setDatas(data);
   }, [data]);
-    
-    
-  function closeModal() {
-    setIsOpen(false);
-  }
 
-  function openModal() {
-    setIsOpen(true);
+  const DeleteUser = async (id) => {
+    const resp = await deletData(`/api/v1/deleteuser/${id}`);
+    if (resp.status) {
+      const updatedUser = datas.filter((user) => {
+        return user._id !== id;
+      });
+      setDatas(updatedUser);
     }
-    
-    const DeleteUser = async (id) => {
-        const resp = await deletData(
-          `/api/v1/deleteuser/${id}`
-        );
-        if (resp.status) {
-            const updatedUser = datas.filter((user) => {
-                return datas._id !==id
-            })
-          setDatas(updatedUser)
-      }
-      toast.success(resp.message)
-  }
-  
+    toast.success(resp.message);
+  };
 
   const EiditUser = (id) => {
-    navigate(`/eidit/user/${id}`)
-  }
+    navigate(`/eidit/user/${id}`);
+  };
+  const ShowMoreData = () => {
+    setVisible((preValue) => preValue + 15);
+  };
   return (
     <>
       <div className="container mx-auto ">
@@ -55,7 +47,7 @@ function UserTab() {
                 <th></th>
               </tr>
             </thead>
-            {datas.map((i) => {
+            {datas?.slice(0, visible).map((i) => {
               return (
                 <tbody className="text-black bg-white border ">
                   <tr className="h-10 text-sm text-center hover:bg-gray-300">
@@ -67,18 +59,24 @@ function UserTab() {
                       <div className="flex w-full">
                         <button
                           type="button"
-                          onClick={()=>EiditUser(i._id)}
+                          onClick={() => EiditUser(i._id)}
                           className="w-full p-1 font-medium text-white bg-blue-600 rounded"
                         >
                           Eidit
                         </button>
                       </div>
-                      <button onClick={()=>DeleteUser(i._id)} className="w-full p-1 text-white bg-red-600 rounded">Delete</button>
+                      <button
+                        onClick={() => DeleteUser(i._id)}
+                        className="w-full p-1 text-white bg-red-600 rounded"
+                      >
+                        Delete
+                      </button>
                     </td>
                   </tr>
                 </tbody>
               );
             })}
+            <button className="p-2 mt-2 bg-black rounded-md mr-14 mtext-white" onClick={ShowMoreData}>Show More</button>
           </table>
         </div>
       </div>

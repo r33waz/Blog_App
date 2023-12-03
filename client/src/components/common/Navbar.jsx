@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { logout } from "../authentication/loginSlice";
 import { useState } from "react";
+import LightSpeed from "react-reveal/LightSpeed";
 
 function NavBar() {
   const user = useSelector((state) => state.user);
@@ -16,6 +17,7 @@ function NavBar() {
   };
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const Logout = async () => {
     const resp = await postData("/api/v1/logout");
     if (resp.status === true) {
@@ -25,8 +27,8 @@ function NavBar() {
     }
   };
 
-  const eiditblog = (id) => {
-    navigate(`/editBlog/${id}`);
+  const eidituser = (id) => {
+    navigate(`/eidit/user/${id}`);
   };
 
   return (
@@ -34,8 +36,10 @@ function NavBar() {
       <div className="container mx-auto">
         <nav className="sticky top-0 z-50 flex items-center justify-between p-2 shadow-lg">
           <div className="flex items-center gap-2">
-            <img src={BlogLogo} alt="logo" className="w-10 h-10" />
-            <span className="font-serif text-lg">Blogs</span>
+            <LightSpeed>
+              <img src={BlogLogo} alt="logo" className="w-10 h-10" />
+              <span className="font-serif text-lg">Blogs</span>
+            </LightSpeed>
           </div>
           <div className="justify-between hidden gap-4 md:flex lg:flex">
             <div className="flex items-center gap-10">
@@ -63,8 +67,8 @@ function NavBar() {
                         </svg>
                       </button>
                       <div className="flex flex-col ">
-                        <p>{user.name}</p>
-                        <small>{user.email}</small>
+                        <p>{user?.firstname + " " + user?.lastname}</p>
+                        <small>{user?.email}</small>
                       </div>
                     </div>
                   </DropdownMenu.Trigger>
@@ -72,7 +76,7 @@ function NavBar() {
                     <DropdownMenu.Item className="flex gap-2 outline-none">
                       <button
                         onClick={() => {
-                          eiditblog(user.id);
+                          eidituser(user?.id);
                         }}
                         className="flex font-mono text-sm font-semibold text-center text-black bg-white rounded-md"
                       >
@@ -163,7 +167,7 @@ function NavBar() {
           <>
             <div className="sticky z-50 flex flex-col items-start gap-3 text-black bg-white top-14 md:hidden lg:hidden ">
               <div className="flex flex-col w-full gap-2">
-                {name.email ? (
+                {user.email ? (
                   <div className="z-50 flex items-center gap-2">
                     <DropdownMenu.Root>
                       <DropdownMenu.Trigger className="w-full outline-none">
@@ -182,8 +186,8 @@ function NavBar() {
                             </svg>
                           </button>
                           <div className="flex flex-col underline">
-                            <p className="font-bold">{name.name}</p>
-                            <small>{name.email}</small>
+                            <p className="font-bold">{user.name}</p>
+                            <small>{user.email}</small>
                           </div>
                         </div>
                       </DropdownMenu.Trigger>
@@ -200,7 +204,9 @@ function NavBar() {
                               d="M5 23.7q-.825 0-1.413-.587T3 21.7v-14q0-.825.588-1.413T5 5.7h8.925l-2 2H5v14h14v-6.95l2-2v8.95q0 .825-.588 1.413T19 23.7H5Zm7-9Zm4.175-8.425l1.425 1.4l-6.6 6.6V15.7h1.4l6.625-6.625l1.425 1.4l-7.2 7.225H9v-4.25l7.175-7.175Zm4.275 4.2l-4.275-4.2l2.5-2.5q.6-.6 1.438-.6t1.412.6l1.4 1.425q.575.575.575 1.4T22.925 8l-2.475 2.475Z"
                             />
                           </svg>
-                          Eidit Account
+                          <button onClick={() => eidituser(user?._id)}>
+                            Eidit Account
+                          </button>
                         </DropdownMenu.Item>
 
                         <DropdownMenu.Item className="outline-none">

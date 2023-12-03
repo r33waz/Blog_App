@@ -2,6 +2,7 @@ import React from 'react'
 import { Tab } from "@headlessui/react";
 import { Fragment } from "react";
 import UserTab from './usereidit';
+import EiditBlog from '../Blogs/eidit_blogs';
 
 function AdminPage() {
   return (
@@ -38,7 +39,7 @@ function AdminPage() {
           </Tab.List>
           <Tab.Panels>
             <Tab.Panel><UserTab/></Tab.Panel>
-            <Tab.Panel>Content 2</Tab.Panel>
+            <Tab.Panel><EiditBlog/> </Tab.Panel>
           </Tab.Panels>
         </Tab.Group>
       </div>

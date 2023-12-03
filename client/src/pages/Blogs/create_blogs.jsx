@@ -1,11 +1,14 @@
 import { useForm } from "react-hook-form";
 import useSWRMutation from "swr/mutation";
-import { postData } from "../../service/axios.services";
+import { postImageData } from "../../service/axios.services";
 import { useSelector } from "react-redux";
 import { useState } from "react";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 function CreateBlog() {
   const user = useSelector((state) => state.user);
   const [picture, setPicture] = useState(null);
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -17,15 +20,17 @@ function CreateBlog() {
     const formData = new FormData();
     formData.append("title", data.title);
     formData.append("description", data.description);
-    formData.append("photo", data.photo[0].name);
+    formData.append("photo", data.photo[0]);
     formData.append("userid", user.id);
     formData.append("username", user.name);
-    formData.append("category", data.category);
+    formData.append("categorys", data.category);
     trigger(formData);
   }
 
   async function createpost(url, { arg }) {
-    await postData(url, arg);
+    await postImageData(url, arg);
+    navigate("/blog/home");
+    toast.success("Blog Created Sucesssfully");
   }
 
   const onChangePicture = (e) => {
@@ -109,7 +114,7 @@ function CreateBlog() {
                 ""
               )}
             </div>
-            <div className="flex flex-col gap-1">
+            {/* <div className="flex flex-col gap-1">
               <label className="font-serif text-lg ">Category</label>
               <input
                 id="category"
@@ -120,7 +125,23 @@ function CreateBlog() {
                 autoComplete="off"
               />
               <span className="text-xs font-semibold text-red-600">
-                {errors.category && <p>Category  is required</p>}
+                {errors.category && <p>Category is required</p>}
+              </span>
+            </div> */}
+            <div className="flex flex-col gap-1">
+              <label className="font-serif text-lg ">Category</label>
+              <select
+                className="h-10 pl-2 text-sm font-bold text-white rounded"
+                {...register("category", { required: true })}
+                defaultValue="codeing" // Set the default value to match one of the options
+              >
+                <option value="codeing">Codeing</option>
+                <option value="travel">Travel</option>
+                <option value="business">Business</option>
+                <option value="gaming">Gaming</option>
+              </select>
+              <span className="text-xs font-semibold text-red-600">
+                {errors.category && <p>Category is required</p>}
               </span>
             </div>
             <button
